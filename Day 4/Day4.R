@@ -63,3 +63,36 @@ for (i in seq_len(nrow(x_inds))) {
 }
 
 print(num_diags + num_xmas_h + num_samx_h + num_xmas_v + num_samx_v)
+
+# Part 2
+pos <- rbind(c(1, -1), c(0, 0), c(-1, 1))
+neg <- rbind(c(-1, -1), c(0, 0), c(1, 1))
+
+a_inds <- arrayInd(which(input == "A"), rep(gridsize, 2))
+
+mas_word_tester <- function(word) {
+  word == "MAS" | word == "SAM"
+}
+mas_search <- function(ind) {
+  word_flag <- c(0, 0)
+  coord_mat <- matrix(rep(ind, 3), ncol = 2, byrow = TRUE)
+  pos_coords <- coord_mat + pos
+  neg_coords <- coord_mat + neg
+  coord_list <- list(pos_coords, neg_coords)
+  for (i in 1:2) {
+    if (coord_tester(coord_list[[i]])) {
+      word <- paste0(input[coord_list[[i]]], collapse = "")
+      if (mas_word_tester(word)) {
+        word_flag[i] <- 1
+      }
+    }
+  }
+  return(prod(word_flag))
+}
+
+num_mas <- 0
+for (i in seq_len(nrow(a_inds))) {
+  num_mas <- num_mas + mas_search(a_inds[i, ])
+}
+
+print(num_mas)
