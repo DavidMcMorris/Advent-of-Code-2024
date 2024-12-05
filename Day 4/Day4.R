@@ -4,11 +4,11 @@ input_filename <- "sample.txt"
 input <- read.table(input_filename)[[1]]
 gridsize <- nchar(input[1])
 
-# Verticals
+# Horizontals
 num_xmas_h <- sum(gregexpr("XMAS", input) != -1)
 num_samx_h <- sum(gregexpr("SAMX", input) != -1)
 
-# Horizontals
+# Vericals
 input_v <- input %>%
   strsplit(., "") %>%
   unlist() %>%
