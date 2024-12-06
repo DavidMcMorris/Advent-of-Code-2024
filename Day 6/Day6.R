@@ -2,6 +2,7 @@ library(dplyr)
 
 input_filename <- "input.txt"
 input <- read.table(input_filename)[[1]]
+gridsize <- length(input)
 
 input <- input %>%
   strsplit(., "") %>%
@@ -29,25 +30,24 @@ walk <- function(guard, direction, obstructions) {
   return(list(guard, direction))
 }
 
-flag <- 0
-loc_info <- list(guard, direction)
-loc_hist <- paste0(guard, collapse = ",")
-while (flag == 0) {
-  loc_info <- walk(loc_info[[1]], loc_info[[2]], obstructions)
-  if (!coord_tester(loc_info[[1]])) {
-    flag <- 1
-  } else {
-    loc_hist <- c(loc_hist, paste0(loc_info[[1]], collapse = ","))
-  }
-}
+# flag <- 0
+# loc_info <- list(guard, direction)
+# loc_hist <- paste0(guard, collapse = ",")
+# while (flag == 0) {
+#   loc_info <- walk(loc_info[[1]], loc_info[[2]], obstructions)
+#   if (!coord_tester(loc_info[[1]])) {
+#     flag <- 1
+#   } else {
+#     loc_hist <- c(loc_hist, paste0(loc_info[[1]], collapse = ","))
+#   }
+# }
 
-print(length(unique(loc_hist)))
+# print(length(unique(loc_hist)))
 
 # Part 2
 loops <- 0
 
 for (i in seq_along(input)) {
-  print(100*i / length(input))
   new_input <- input
   arr_ind <- arrayInd(i, dims)
   if (new_input[i] != "O" && !identical(arr_ind, t(guard))) {
@@ -68,6 +68,7 @@ for (i in seq_along(input)) {
       }
     }
   }
+  print(flag)
 }
 
 print(loops)
