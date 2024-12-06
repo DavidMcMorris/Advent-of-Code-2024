@@ -20,7 +20,7 @@ coord_tester <- function(mat) {
 
 walk <- function(guard, direction) {
   next_step <- guard + direction
-  if (paste0(next_step, collapse = "") %in% apply(obstructions, 1, paste0, collapse = "")) {
+  if (paste0(next_step, collapse = ",") %in% apply(obstructions, 1, paste0, collapse = ",")) {
     direction <- turn_mat %*% direction
   } else {
     guard <- next_step
@@ -29,16 +29,14 @@ walk <- function(guard, direction) {
 }
 
 flag <- 0
-steps <- 0
 output <- list(guard, direction)
-loc_hist <- paste0(guard, collapse = "")
+loc_hist <- paste0(guard, collapse = ",")
 while (flag == 0) {
   output <- walk(output[[1]], output[[2]])
   if (!coord_tester(output[[1]])) {
     flag <- 1
   } else {
-    steps <- steps + 1
-    loc_hist <- c(loc_hist, paste0(output[[1]], collapse = ""))
+    loc_hist <- c(loc_hist, paste0(output[[1]], collapse = ","))
   }
 }
 
