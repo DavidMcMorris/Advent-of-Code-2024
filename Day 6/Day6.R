@@ -35,101 +35,94 @@ walk <- function(guard, direction, obstructions) {
     tryCatch(
       {
         next_obs <- obstructions %>%
-          filter(X2 == guard[2], X1 < guard[1]) %>%
+          filter(X2 == guard[[2]], X1 < guard[[1]]) %>%
           filter(X1 == max(X1))
-        new_guard <- t(matrix(next_obs + c(1, 0)))
+        new_guard <- t(matrix(as.vector(next_obs + c(1, 0))))
         direction <- 2
-        locs <- new_guard[1]:guard[1]
-        loc_hist <- matrix(c(locs, rep(guard[2], length(locs))), ncol = 2, byrow = FALSE)
+        locs <- new_guard[[1]]:guard[[1]]
+        loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
         flag <- 0
-        steps <- guard[1] - new_guard[1]
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = steps, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
         loc_hist <- NULL
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }, warning = function(cond) {
         flag <- 1
         loc_hist <- NULL
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }
     )
   } else if (direction == 2) {
     tryCatch(
       {
         next_obs <- obstructions %>%
-          filter(X1 == guard[1], X2 > guard[2]) %>%
+          filter(X1 == guard[[1]], X2 > guard[[2]]) %>%
           filter(X2 == min(X2))
-        guard <- t(matrix(next_obs + c(0, -1)))
+        new_guard <- t(matrix(as.vector(next_obs + c(0, -1))))
         direction <- 3
-        locs <- guard[2]:new_guard[2]
-        loc_hist <- matrix(c(rep(guard[1], length(locs)), locs), ncol = 2, byrow = FALSE)
+        locs <- guard[[2]]:new_guard[[2]]
+        loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
         flag <- 0
-        steps <- new_guard[2] - guard[2]
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = steps, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }, warning = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }
     )
   } else if (direction == 3) {
     tryCatch(
       {
         next_obs <- obstructions %>%
-          filter(X2 == guard[2], X1 > guard[1]) %>%
+          filter(X2 == guard[[2]], X1 > guard[[1]]) %>%
           filter(X1 == min(X1))
-        guard <- t(matrix(next_obs + c(-1, 0)))
+        new_guard <- t(matrix(as.vector(next_obs + c(-1, 0))))
         direction <- 4
-        locs <- guard[1]:new_guard[1]
-        loc_hist <- matrix(c(locs, rep(guard[2], length(locs))), ncol = 2, byrow = FALSE)
+        locs <- guard[[1]]:new_guard[[1]]
+        loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
         flag <- 0
-        steps <- new_guard[1] - guard[1]
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = steps, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }, warning = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }
     )
   } else if (direction == 4) {
     tryCatch(
       {
         next_obs <- obstructions %>%
-          filter(X1 == guard[1], X2 < guard[2]) %>%
+          filter(X1 == guard[[1]], X2 < guard[[2]]) %>%
           filter(X2 == max(X2))
-        guard <- t(matrix(next_obs + c(0, 1)))
+        new_guard <- t(matrix(as.vector(next_obs + c(0, 1))))
         direction <- 1
-        locs <- new_guard[2]:guard[2]
-        loc_hist <- matrix(c(rep(guard[1], length(locs)), locs), ncol = 2, byrow = FALSE)
+        locs <- new_guard[[2]]:guard[[2]]
+        loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
         flag <- 0
-        steps <- guard[2] - new_guard[2]
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = steps, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }, warning = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, steps = 0, loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
       }
     )
   }
 }
 
 loc_info <- list(guard = guard, direction = direction, flag = 0)
-loc_hist <- paste0(unlist(loc_info[1:2]), collapse = ",")
-steps <- 0
+loc_hist <- paste0(guard, collapse = ",")
 while (loc_info$flag == 0) {
   loc_info <- walk(loc_info$guard, loc_info$direction, obstructions)
-  loc_hist <- c(loc_hist, apply(x, 1, paste0, collapse = ","))
-  steps <- steps + loc_info$steps
+  loc_hist <- c(loc_hist, apply(loc_info$loc_hist, 1, paste0, collapse = ","))
 }
 
-print(steps)
 print(length(unique(loc_hist)))
 
 # Part 2
