@@ -39,18 +39,22 @@ walk <- function(guard, direction, obstructions) {
           filter(X1 == max(X1))
         new_guard <- t(matrix(as.vector(next_obs + c(1, 0))))
         direction <- 2
+        flag <- 0
         locs <- new_guard[[1]]:guard[[1]]
         loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
-        flag <- 0
         return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
-        loc_hist <- NULL
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(1, guard[[2]]))
+        locs <- new_guard[[1]]:guard[[1]]
+        loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, warning = function(cond) {
         flag <- 1
-        loc_hist <- NULL
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(1, guard[[2]]))
+        locs <- new_guard[[1]]:guard[[1]]
+        loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }
     )
   } else if (direction == 2) {
@@ -61,16 +65,22 @@ walk <- function(guard, direction, obstructions) {
           filter(X2 == min(X2))
         new_guard <- t(matrix(as.vector(next_obs + c(0, -1))))
         direction <- 3
+        flag <- 0
         locs <- guard[[2]]:new_guard[[2]]
         loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
-        flag <- 0
         return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(guard[[1]], gridsize))
+        locs <- guard[[2]]:new_guard[[2]]
+        loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, warning = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(guard[[1]], gridsize))
+        locs <- guard[[2]]:new_guard[[2]]
+        loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }
     )
   } else if (direction == 3) {
@@ -81,16 +91,22 @@ walk <- function(guard, direction, obstructions) {
           filter(X1 == min(X1))
         new_guard <- t(matrix(as.vector(next_obs + c(-1, 0))))
         direction <- 4
+        flag <- 0
         locs <- guard[[1]]:new_guard[[1]]
         loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
-        flag <- 0
         return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, error = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(gridsize, guard[[2]]))
+        locs <- guard[[1]]:new_guard[[1]]
+        loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
       }, warning = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(gridsize, guard[[2]]))
+        locs <- guard[[1]]:new_guard[[1]]
+        loc_hist <- matrix(c(locs, rep(guard[[2]], length(locs))), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))        
       }
     )
   } else if (direction == 4) {
@@ -101,16 +117,22 @@ walk <- function(guard, direction, obstructions) {
           filter(X2 == max(X2))
         new_guard <- t(matrix(as.vector(next_obs + c(0, 1))))
         direction <- 1
+        flag <- 0
         locs <- new_guard[[2]]:guard[[2]]
         loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
-        flag <- 0
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))        
       }, error = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(guard[[1]], 1))
+        locs <- new_guard[[2]]:guard[[2]]
+        loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))        
       }, warning = function(cond) {
         flag <- 1
-        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = guard))
+        new_guard <- rbind(c(guard[[1]], 1))
+        locs <- new_guard[[2]]:guard[[2]]
+        loc_hist <- matrix(c(rep(guard[[1]], length(locs)), locs), ncol = 2, byrow = FALSE)
+        return(list(guard = new_guard, direction = direction, flag = flag, loc_hist = loc_hist))        
       }
     )
   }
