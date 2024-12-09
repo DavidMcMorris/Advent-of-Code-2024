@@ -14,21 +14,6 @@ dims <- dim(input)
 obstructions <- data.frame(arrayInd(which(input == "O"), dims))
 direction <- 1
 guard <- arrayInd(which(input == "^"), dims)
-# turn_mat <- matrix(c(0, -1, 1, 0), nrow = 2)
-
-coord_tester <- function(mat) {
-  sum(mat <= 0) == 0 && sum(mat > dims[1]) == 0
-}
-
-# walk <- function(guard, direction, obstructions) {
-#   next_step <- guard + direction
-#   if (paste0(next_step, collapse = ",") %in% apply(obstructions, 1, paste0, collapse = ",")) {
-#     direction <- turn_mat %*% direction
-#   } else {
-#     guard <- next_step
-#   }
-#   return(list(guard, direction))
-# }
 
 walk <- function(guard, direction, obstructions) {
   if (direction == 1) {
