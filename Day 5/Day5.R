@@ -37,11 +37,17 @@ page_check <- function(page_order) {
 }
 
 total <- 0
+correct_order_inds <- NULL
 for (i in seq_along(pages)) {
   flag <- page_check(pages[[i]])
   if (flag == 1) {
     total <- total + pages[[i]][(length(pages[[i]]) + 1) / 2]
+    correct_order_inds <- c(correct_order_inds, i)
   }
 }
 
 print(total)
+
+# Part 2
+
+out_of_order <- pages[-correct_order_inds]
