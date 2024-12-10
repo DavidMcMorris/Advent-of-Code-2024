@@ -135,6 +135,7 @@ walk <- function(guard, direction, obstructions) {
   }
 }
 
+# Uncomment for part 1
 # loc_info <- list(guard = guard, direction = direction, flag = 0)
 # loc_hist <- paste0(guard, collapse = ",")
 # while (loc_info$flag == 0) {
@@ -166,9 +167,6 @@ for (i in seq_along(input)) {
         loc_hist <- c(loc_hist, paste0(c(loc_info$guard, loc_info$direction), collapse = ","))
       }
     }
-  }
-  if (100 * (i / l) %% 1 == 0) {
-    print(c(100 * (i / l), loops))
   }
 }
 
