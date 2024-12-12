@@ -1,6 +1,6 @@
 library(dplyr)
 
-input_filename <- "sample.txt"
+input_filename <- "input.txt"
 input <- scan(input_filename)
 
 blink <- function(stone) {
@@ -25,9 +25,10 @@ blink <- function(stone) {
 }
 
 for (i in 1:25) {
+  print(i)
   new_stones <- NULL
-  for (i in seq_along(input)) {
-    new_stones <- c(new_stones, blink(input[i]))
+  for (j in seq_along(input)) {
+    new_stones <- c(new_stones, blink(input[j]))
   }
   input <- new_stones
 }
