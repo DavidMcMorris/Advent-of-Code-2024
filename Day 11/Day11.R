@@ -24,7 +24,7 @@ blink <- function(stone) {
   return(new_stones)
 }
 
-for (i in 1:25) {
+for (i in 1:75) {
   print(i)
   new_stones <- NULL
   for (j in seq_along(input)) {
