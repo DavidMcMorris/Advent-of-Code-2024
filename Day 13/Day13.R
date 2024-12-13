@@ -17,9 +17,12 @@ for (i in seq_len(num_machines)) {
   a <- matrix(nums[j : (j + 3)], nrow = 2)
   b <- matrix(nums[(j + 4) : (j + 5)]) + 1e+13
   x <- solve(a, b)
-  if (sum(unlist(lapply(x, function(y) min(abs(c(y %% 1, y %% 1 - 1))) < tol))) == 2) {
+  flag <- lapply(x, function(y) min(abs(c(y %% 1, y %% 1 - 1))) < tol) %>%
+    unlist() %>%
+    sum() == 2
+  if (flag) {
     cost <- cost + 3 * x[1] + x[2]
   }
 }
 
-print(cost)
+print(sprintf("%1.f", cost))
