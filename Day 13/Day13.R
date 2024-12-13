@@ -2,7 +2,7 @@ library(dplyr)
 
 input_filename <- "input.txt"
 input <- readLines(input_filename)
-num_machines <- length(input)
+num_machines <- ceiling(length(input) / 4)
 
 inds <- gregexpr("\\d+", input)
 nums <- regmatches(input, inds) %>%
@@ -13,8 +13,9 @@ tol <- 1e-10
 cost <- 0
 
 for (i in seq_len(num_machines)) {
-  a <- matrix(nums[i : (i + 3)], nrow = 2)
-  b <- matrix(nums[(i + 4) : (i + 5)])
+  j <- 1 + 4 * (i - 1)
+  a <- matrix(nums[j : (j + 3)], nrow = 2)
+  b <- matrix(nums[(j + 4) : (j + 5)])
   x <- solve(a, b)
   if (sum(unlist(lapply(x, function(y) min(abs(c(y %% 1, y %% 1 - 1))) < tol))) == 2) {
     cost <- cost + 3 * x[1] + x[2]
