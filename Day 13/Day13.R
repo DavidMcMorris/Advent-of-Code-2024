@@ -9,11 +9,11 @@ nums <- regmatches(input, inds) %>%
   unlist() %>%
   as.numeric()
 
-tol <- 1e-10
+tol <- 1e-5
 cost <- 0
 
 for (i in seq_len(num_machines)) {
-  j <- 1 + 4 * (i - 1)
+  j <- 1 + 6 * (i - 1)
   a <- matrix(nums[j : (j + 3)], nrow = 2)
   b <- matrix(nums[(j + 4) : (j + 5)])
   x <- solve(a, b)
