@@ -1,6 +1,6 @@
 library(dplyr)
 
-input_filename <- "sample.txt"
+input_filename <- "input.txt"
 input <- readLines(input_filename)
 linebreak <- which(input == "")
 rules <- input[1:(linebreak - 1)] %>%
@@ -91,4 +91,10 @@ merge_sort <- function(m) {
 }
 
 
-out_of_order <- merge_sort(out_of_order)
+out_of_order <- lapply(out_of_order, merge_sort) %>% lapply(., unlist)
+total <- 0
+for (i in seq_along(out_of_order)) {
+  total <- total + out_of_order[[i]][(length(out_of_order[[i]]) + 1) / 2]
+}
+
+print(total)
