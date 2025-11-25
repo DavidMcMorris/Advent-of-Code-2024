@@ -49,3 +49,9 @@ blinkn_len <- function(stone,n) {
         return(stone_cache[[as.character(stone)]][n])
     }
 }
+
+len <- 0
+for(i in seq_along(input)) {
+  print(i)
+  len <- len + blinkn_len(input[i],75)
+}
