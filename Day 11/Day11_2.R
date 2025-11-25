@@ -2,8 +2,7 @@ library(dplyr)
 
 input_filename <- "input.txt"
 input <- scan(input_filename)
-one <- NULL
-zero <- NULL
+stone_cache <- list()
 
 blink <- function(stone) {
   if (stone == 0) {
@@ -27,7 +26,6 @@ blink <- function(stone) {
 }
 
 blinkn <- function(stone,n) {
-    x <- list()
     new_stones <- blink(stone)
     if(n == 1){
         return(new_stones)
@@ -38,4 +36,16 @@ blinkn <- function(stone,n) {
         }
     }
     return(next_stones)
+}
+
+blinkn_len <- function(stone,n) {
+    if(is.null(stone_cache[[as.character(stone)]])) {
+        stone_cache[[as.character(stone)]][n] <<- blinkn(stone,n) %>% length()
+        return(stone_cache[[as.character(stone)]][n])
+    } else if(!is.na(stone_cache[[as.character(stone)]][n])) {
+        return(stone_cache[[as.character(stone)]][n])
+    } else {
+        stone_cache[[as.character(stone)]][n] <<- blinkn(stone,n) %>% length()
+        return(stone_cache[[as.character(stone)]][n])
+    }
 }
