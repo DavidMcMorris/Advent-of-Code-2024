@@ -1,3 +1,4 @@
+start <- Sys.time()
 library(dplyr)
 
 input_filename <- "input.txt"
@@ -26,32 +27,32 @@ blink <- function(stone) {
 }
 
 blinkn <- function(stone,n) {
-    new_stones <- blink(stone)
-    if(n == 1){
-        return(new_stones)
+    lab <- paste(stone,n,sep="_")
+    if(!is.null(stone_cache[[lab]])) {
+      return(stone_cache[[lab]])
     } else {
-        next_stones <- NULL
-        for(j in seq_along(new_stones)) {
-            next_stones <- c(next_stones,blinkn(new_stones[j],n-1))
-        }
+      new_stones <- blink(stone)
+      if(n == 1){
+          stone_cache[[lab]] <<- length(new_stones)
+          return(length(new_stones))
+      } else {
+          len <- 0
+          for(j in seq_along(new_stones)) {
+              next_stones <- blinkn(new_stones[j],n-1)
+              stone_cache[[paste(new_stones[j],n-1,sep="_")]] <<- next_stones
+              len <- len + next_stones
+          }
+      }
+      return(len)
     }
-    return(next_stones)
 }
 
-blinkn_len <- function(stone,n) {
-    if(is.null(stone_cache[[as.character(stone)]])) {
-        stone_cache[[as.character(stone)]][n] <<- blinkn(stone,n) %>% length()
-        return(stone_cache[[as.character(stone)]][n])
-    } else if(!is.na(stone_cache[[as.character(stone)]][n])) {
-        return(stone_cache[[as.character(stone)]][n])
-    } else {
-        stone_cache[[as.character(stone)]][n] <<- blinkn(stone,n) %>% length()
-        return(stone_cache[[as.character(stone)]][n])
-    }
-}
 
 len <- 0
 for(i in seq_along(input)) {
   print(i)
-  len <- len + blinkn_len(input[i],75)
+  len <- len + blinkn(input[i],75)
 }
+print(len)
+stop <- Sys.time()
+print(stop-start)
