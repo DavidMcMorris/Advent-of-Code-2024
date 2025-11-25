@@ -1,4 +1,3 @@
-start <- Sys.time()
 library(dplyr)
 
 input_filename <- "input.txt"
@@ -43,6 +42,7 @@ blinkn <- function(stone,n) {
               len <- len + next_stones
           }
       }
+      stone_cache[[lab]] <<- len
       return(len)
     }
 }
@@ -54,5 +54,3 @@ for(i in seq_along(input)) {
   len <- len + blinkn(input[i],75)
 }
 print(len)
-stop <- Sys.time()
-print(stop-start)
