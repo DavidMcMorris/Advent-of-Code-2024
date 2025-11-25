@@ -26,26 +26,37 @@ blink <- function(stone) {
   return(new_stones)
 }
 
+
 input1 <- 1
-for(i in 1:25) {
-#   print(i)
+extra <- 0
+for(i in 1:75) {
+  print(i)
   new_stones <- NULL
   for (j in seq_along(input1)) {
-    new_stones <- c(new_stones, blink(input1[j]))
-    one[i] <- length(new_stones)
+    if (j > 1 && input1[j] == 1) {
+        extra <- extra + length(input1)
+    } else {
+        new_stones <- c(new_stones, blink(input1[j]))
+        one[i] <- length(new_stones) + extra
+    }
   }
   input1 <- new_stones
 }
 
 input0 <- 0
-for(i in 1:25) {
+extra <- 0
+for(i in 1:75) {
 #   print(i)
   new_stones <- NULL
   for (j in seq_along(input0)) {
-    new_stones <- c(new_stones, blink(input0[j]))
-    zero[i] <- length(new_stones)
+    if (input0[j] == 0) {
+        extra <- extra + length(input0)
+    } else {
+        new_stones <- c(new_stones, blink(input0[j]))
+        zero[i] <- length(new_stones)
+    }
   }
-  input0 <- new_stones
+  input0 <- new_stones + extra
 }
 
 onezero <- 0
@@ -55,9 +66,9 @@ for(i in 1:75){
   for (j in seq_along(input)) {
     if(input[j] == 1 || input[j] == 1){
         if(input[j] == 1){
-            onezero <- onezero + one[26-i]
+            onezero <- onezero + one[76-i]
         } else {
-            onezero <- onezero + one[26-i]
+            onezero <- onezero + one[76-i]
         }
     } else {
     new_stones <- c(new_stones, blink(input[j]))
