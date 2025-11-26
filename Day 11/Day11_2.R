@@ -25,33 +25,39 @@ blink <- function(stone) {
   return(new_stones)
 }
 
-blinkn <- function(stone,n) {
-    lab <- paste(stone,n,sep="_")
-    if(!is.null(stone_cache[[lab]])) {
+blinkn <- function(stone, n) {
+  lab <- paste(stone, n, sep = "_")
+  if (!is.null(stone_cache[[lab]])) {
+    return(stone_cache[[lab]])
+  } else {
+    new_stones <- blink(stone)
+    new_stones <- new_stones %>%
+      table() %>%
+      as.data.frame() %>%
+      setNames(c("stone", "freq"))
+    if (n == 1) {
+      stone_cache[[lab]] <<- sum(new_stones$freq)
       return(stone_cache[[lab]])
     } else {
-      new_stones <- blink(stone)
-      new_stones <- as.data.frame(table(new_stones)) %>% setNames(c("stone","freq"))
-      if(n == 1){
-          stone_cache[[lab]] <<- sum(new_stones$freq)
-          return(stone_cache[[lab]])
-      } else {
-          len <- 0
-          for(j in seq_along(new_stones$stone)) {
-              next_stones <-  blinkn(as.numeric(as.character(new_stones$stone[j])),n-1)
-              stone_cache[[paste(as.numeric(as.character(new_stones$stone[j])),n-1,sep="_")]] <<- next_stones
-              len <- len + new_stones$freq[j] * next_stones
-          }
+      len <- 0
+      for (j in seq_along(new_stones$stone)) {
+        next_stone <- new_stones$stone[j] %>%
+          as.character() %>%
+          as.numeric()
+        next_stones <- blinkn(next_stone, n - 1)
+        stone_cache[[paste(next_stone, n - 1, sep = "_")]] <<- next_stones
+        len <- len + new_stones$freq[j] * next_stones
       }
-      stone_cache[[lab]] <<- len
-      return(len)
     }
+    stone_cache[[lab]] <<- len
+    return(len)
+  }
 }
 
 
 len <- 0
 for(i in seq_along(input)) {
   print(i)
-  len <- len + blinkn(input[i],75)
+  len <- len + blinkn(input[i], 75)
 }
 print(len)
